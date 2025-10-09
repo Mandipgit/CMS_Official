@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:official_cms/student/allvariables/allVar.dart';
 import 'package:official_cms/student/pages/Profilepage/profilePage.dart';
 
-class Navbar extends StatefulWidget {
-  const Navbar({super.key});
+class Navvbar extends StatefulWidget {
+  const Navvbar({super.key});
 
   @override
-  State<Navbar> createState() => _NavbarState();
+  State<Navvbar> createState() => _NavvbarState();
 }
 
-class _NavbarState extends State<Navbar> {
+class _NavvbarState extends State<Navvbar> {
   @override
   Widget build(BuildContext context) {
     // Color myColor = Color(0xFF167AFA);
