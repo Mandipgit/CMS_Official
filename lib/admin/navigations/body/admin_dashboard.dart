@@ -71,26 +71,28 @@ class _MainNavigatorState extends State<MainNavigator> {
       return false;
     }
 
-    bool shouldExit = await showDialog(
+    bool shouldExit =
+        await showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (_) => WillPopScope(
-            onWillPop: () async => false,
-            child: AlertDialog(
-              title: const Text('Exit App'),
-              content: const Text('Do you want to exit the app?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('No'),
+          builder:
+              (_) => WillPopScope(
+                onWillPop: () async => false,
+                child: AlertDialog(
+                  title: const Text('Exit App'),
+                  content: const Text('Do you want to exit the app?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text('No'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text('Yes'),
+                    ),
+                  ],
                 ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Yes'),
-                ),
-              ],
-            ),
-          ),
+              ),
         ) ??
         false;
 
@@ -107,35 +109,39 @@ class _MainNavigatorState extends State<MainNavigator> {
       child: Scaffold(
         key: _scaffoldKey,
         drawer: _showingDashboard ? Navbar() : null,
-        appBar: _showingDashboard
-            ? AppBar(
-                backgroundColor: blueColor,
-                leading: IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-                ),
-                title: const Text('Admin'),
-                actions: [
-                  IconButton(
-                    icon: Icon(themeProvider.isDarkMode
-                        ? Icons.light_mode
-                        : Icons.dark_mode),
-                    onPressed: () => themeProvider.toggleTheme(),
+        appBar:
+            _showingDashboard
+                ? AppBar(
+                  backgroundColor: blueColor,
+                  leading: IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () => _scaffoldKey.currentState?.openDrawer(),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.notifications),
-                    onPressed: () => _pushPage(SendNotificationPage()),
-                  ),
-                ],
-              )
-            : null,
+                  title: const Text('Admin'),
+                  actions: [
+                    IconButton(
+                      icon: Icon(
+                        themeProvider.isDarkMode
+                            ? Icons.light_mode
+                            : Icons.dark_mode,
+                      ),
+                      onPressed: () => themeProvider.toggleTheme(),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.notifications),
+                      onPressed: () => _pushPage(SendNotificationPage()),
+                    ),
+                  ],
+                )
+                : null,
         body: Stack(
           children: [
             Navigator(
               key: _navigatorKey,
-              onGenerateRoute: (_) => MaterialPageRoute(
-                builder: (_) => Dashboard(onSectionSelected: _pushPage),
-              ),
+              onGenerateRoute:
+                  (_) => MaterialPageRoute(
+                    builder: (_) => Dashboard(onSectionSelected: _pushPage),
+                  ),
             ),
             if (_showingDashboard)
               Positioned(
@@ -173,8 +179,9 @@ class _DashboardState extends State<Dashboard> {
     await Future.delayed(const Duration(milliseconds: 1000));
     setState(() => _refreshKey = UniqueKey());
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Dashboard refreshed')));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Dashboard refreshed')));
   }
 
   @override
@@ -299,7 +306,11 @@ class _ViewCountState extends State<ViewCount> {
   final List<Map<String, dynamic>> countMap = [
     {"number": "68", "Title": "Teachers", "icon": Icons.person_outline},
     {"number": "1108", "Title": "Students", "icon": Icons.school_outlined},
-    {"number": "16", "Title": "Admin's", "icon": Icons.admin_panel_settings_outlined},
+    {
+      "number": "16",
+      "Title": "Admin's",
+      "icon": Icons.admin_panel_settings_outlined,
+    },
     {"number": "969", "Title": "Parents", "icon": Icons.people_outline},
   ];
 
@@ -312,56 +323,67 @@ class _ViewCountState extends State<ViewCount> {
         width: screenWidth - 75,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: countMap.map((data) {
-            final int targetNumber = int.parse(data["number"]);
-            return TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: 0, end: targetNumber.toDouble()),
-              duration: const Duration(seconds: 4),
-              builder: (context, value, child) {
-                return Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        CustomPaint(
-                          painter: CircleProgressPainter(
-                              progress: value / targetNumber, color: blueColor),
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    value.toInt().toString(),
-                                    style: const TextStyle(
-                                        fontSize: 14, fontWeight: FontWeight.w600),
+          children:
+              countMap.map((data) {
+                final int targetNumber = int.parse(data["number"]);
+                return TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0, end: targetNumber.toDouble()),
+                  duration: const Duration(seconds: 4),
+                  builder: (context, value, child) {
+                    return Material(
+                      elevation: 5,
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CustomPaint(
+                              painter: CircleProgressPainter(
+                                progress: value / targetNumber,
+                                color: blueColor,
+                              ),
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        value.toInt().toString(),
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Icon(
+                                        data["icon"],
+                                        size: 16,
+                                        color: blueColor,
+                                      ),
+                                    ],
                                   ),
-                                  Icon(data["icon"], size: 16, color: blueColor),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                data["Title"],
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            data["Title"],
-                            style: const TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 );
-              },
-            );
-          }).toList(),
+              }).toList(),
         ),
       );
     }
@@ -381,20 +403,27 @@ class CircleProgressPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (size.width / 2) - strokeWidth;
 
-    final backgroundPaint = Paint()
-      ..color = color.withOpacity(0.1)
-      ..strokeWidth = strokeWidth
-      ..style = PaintingStyle.stroke;
+    final backgroundPaint =
+        Paint()
+          ..color = color.withOpacity(0.1)
+          ..strokeWidth = strokeWidth
+          ..style = PaintingStyle.stroke;
 
-    final foregroundPaint = Paint()
-      ..color = color
-      ..strokeWidth = strokeWidth
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
+    final foregroundPaint =
+        Paint()
+          ..color = color
+          ..strokeWidth = strokeWidth
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round;
 
     canvas.drawCircle(center, radius, backgroundPaint);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2,
-        2 * pi * progress, false, foregroundPaint);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      -pi / 2,
+      2 * pi * progress,
+      false,
+      foregroundPaint,
+    );
   }
 
   @override
@@ -415,14 +444,46 @@ class Gridbuild extends StatefulWidget {
 
 class _GridbuildState extends State<Gridbuild> {
   final List<Map<String, dynamic>> gridMap = [
-    {"icon": "assets/icons/parent.png", "title": "Admin Pannel", "description": "Manage and monitor user accounts, roles."},
-    {"icon": "assets/icons/icons2-teacher.png", "title": "Teacher", "description": "Manage teacher profiles and assignments"},
-    {"icon": "assets/icons/icons3-students.png", "title": "Students", "description": "Manage student profiles and academic records"},
-    {"icon": "assets/icons/icon6-form.png", "title": "Admit Card", "description": "Generates Admit Card for Students"},
-    {"icon": "assets/icons/icons4-approve.png", "title": "Approve", "description": "Review and approve leave requests"},
-    {"icon": "assets/icons/examination.png", "title": "Result", "description": "Manage exams, results and grade reports"},
-    {"icon": "assets/icons/examination.png", "title": "ID Card", "description": "Generates ID card of students"},
-    {"icon": "assets/icons/icon7-notification.png", "title": "Notifications", "description": "Send and manage important announcements"},
+    {
+      "icon": "assets/icons/parent.png",
+      "title": "Admin Pannel",
+      "description": "Manage and monitor user accounts, roles.",
+    },
+    {
+      "icon": "assets/icons/icons2-teacher.png",
+      "title": "Teacher",
+      "description": "Manage teacher profiles and assignments",
+    },
+    {
+      "icon": "assets/icons/icons3-students.png",
+      "title": "Students",
+      "description": "Manage student profiles and academic records",
+    },
+    {
+      "icon": "assets/icons/icon6-form.png",
+      "title": "Admit Card",
+      "description": "Generates Admit Card for Students",
+    },
+    {
+      "icon": "assets/icons/icons4-approve.png",
+      "title": "Approve",
+      "description": "Review and approve leave requests",
+    },
+    {
+      "icon": "assets/icons/examination.png",
+      "title": "Result",
+      "description": "Manage exams, results and grade reports",
+    },
+    {
+      "icon": "assets/icons/examination.png",
+      "title": "ID Card",
+      "description": "Generates ID card of students",
+    },
+    {
+      "icon": "assets/icons/icon7-notification.png",
+      "title": "Notifications",
+      "description": "Send and manage important announcements",
+    },
   ];
 
   bool _isExpanded = false;
@@ -525,12 +586,17 @@ class _GridbuildState extends State<Gridbuild> {
                                 Text(
                                   gridMap[index]['title'],
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 14),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   gridMap[index]['description'],
-                                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.grey[600],
+                                  ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -556,7 +622,10 @@ class _GridbuildState extends State<Gridbuild> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -564,7 +633,10 @@ class _GridbuildState extends State<Gridbuild> {
                   Text(
                     _isExpanded ? "Show Less" : "Show More",
                     style: TextStyle(
-                        color: blueColor, fontSize: 16, fontWeight: FontWeight.w600),
+                      color: blueColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Icon(

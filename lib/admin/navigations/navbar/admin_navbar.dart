@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:official_cms/admin/datatypes/datatypes.dart';
 import 'package:official_cms/admin/navigations/screens/aboutus/aboutus.dart';
@@ -119,7 +118,9 @@ class Navbar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.logout_rounded, color: blueColor),
             title: Text("Logout"),
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
         ],
       ),

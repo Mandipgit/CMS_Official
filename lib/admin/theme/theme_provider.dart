@@ -29,7 +29,7 @@ class ThemeProvider with ChangeNotifier {
       backgroundColor: Color(0xFF1E88E5),
       foregroundColor: Colors.white,
     ),
-    cardTheme: CardTheme(color: Colors.white, elevation: 2),
+    cardTheme: CardThemeData(color: Colors.white, elevation: 2),
     textTheme: TextTheme(
       bodyLarge: TextStyle(color: Colors.black87),
       bodyMedium: TextStyle(color: Colors.black87),
@@ -53,7 +53,7 @@ class ThemeProvider with ChangeNotifier {
         borderSide: BorderSide(color: Color(0xFF1E88E5)),
       ),
     ),
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
       labelColor: Colors.white,
       unselectedLabelColor: Colors.white70,
     ),
@@ -66,7 +66,7 @@ class ThemeProvider with ChangeNotifier {
       backgroundColor: Color(0xFF1E88E5),
       foregroundColor: Colors.white,
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: Colors.white,
       titleTextStyle: TextStyle(color: Colors.black87),
       contentTextStyle: TextStyle(color: Colors.black87),
@@ -125,7 +125,7 @@ class ThemeProvider with ChangeNotifier {
       foregroundColor: Colors.white,
       elevation: 0,
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Color(0xFF151515),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -160,7 +160,7 @@ class ThemeProvider with ChangeNotifier {
       labelStyle: TextStyle(color: Colors.white70),
       hintStyle: TextStyle(color: Colors.white38),
     ),
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
       labelColor: Colors.white,
       unselectedLabelColor: Colors.white70,
       indicatorColor: Color(0xFF1E88E5),
@@ -178,7 +178,7 @@ class ThemeProvider with ChangeNotifier {
       foregroundColor: Colors.white,
       elevation: 4,
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: Color(0xFF151515),
       titleTextStyle: TextStyle(color: Colors.white),
       contentTextStyle: TextStyle(color: Colors.white),
