@@ -43,7 +43,7 @@ class MyProfile extends StatelessWidget {
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
-                          image: AssetImage('assets/profilepic.png')),
+                          image: AssetImage('assets/stuprofile.png')),
                     ),
                   ),
                 ),
