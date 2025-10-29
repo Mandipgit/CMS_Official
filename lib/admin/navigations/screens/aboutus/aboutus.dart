@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:official_cms/admin/datatypes/datatypes.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
 
@@ -25,7 +24,9 @@ class AboutUs extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: const AssetImage('assets/collage/cct.jpeg'),
+              backgroundImage: const AssetImage(
+                'assets/admin_assets/collage/cct.jpeg',
+              ),
               backgroundColor: whiteColor,
             ),
 

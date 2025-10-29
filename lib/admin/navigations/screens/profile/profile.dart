@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:official_cms/admin/datatypes/datatypes.dart';
-
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,13 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       "title": "Educational Information",
       "subtitle": "View your academic qualifications",
       "route": "/educational_information",
-    },
-
-    {
-      "icon": Icons.lock_outline,
-      "title": "Account Settings",
-      "subtitle": "Manage your password and security settings",
-      "route": "/account_settings",
     },
   ];
 
@@ -79,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             backgroundColor: Colors.white,
             child: ClipOval(
               child: Image.asset(
-                "assets/images/img1profile.jpg",
+                "assets/admin_assets/images/img1profile.jpg",
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,
@@ -202,13 +193,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         );
         break;
-
-      case "/account_settings":
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AccountSettingsScreen()),
-        );
-        break;
     }
   }
 }
@@ -307,7 +291,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   backgroundColor: theme.primaryColor.withOpacity(0.1),
                   child: ClipOval(
                     child: Image.asset(
-                      "assets/images/img1profile.jpg",
+                      "assets/admin_assets/images/img1profile.jpg",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -1142,146 +1126,6 @@ class _EducationalInformationScreenState
               ),
             ],
           ),
-    );
-  }
-}
-
-// Account Setting Screen
-
-class AccountSettingsScreen extends StatefulWidget {
-  const AccountSettingsScreen({super.key});
-
-  @override
-  _AccountSettingsScreenState createState() => _AccountSettingsScreenState();
-}
-
-class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  final _currentPasswordController = TextEditingController();
-  final _newPasswordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-
-  bool _obscureCurrent = true;
-  bool _obscureNew = true;
-  bool _obscureConfirm = true;
-
-  String? _hashedPassword;
-
-  void _hashPassword() {
-    final newPassword = _newPasswordController.text;
-    final confirmPassword = _confirmPasswordController.text;
-
-    if (newPassword.isEmpty || confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter new and confirm passwords")),
-      );
-      return;
-    }
-
-    if (newPassword != confirmPassword) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Passwords do not match")));
-      return;
-    }
-
-    final bytes = utf8.encode(newPassword);
-    final digest = sha256.convert(bytes);
-
-    setState(() {
-      _hashedPassword = digest.toString();
-    });
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Password hashed successfully!")));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Password Hashing"),
-        backgroundColor: blueColor,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _buildPasswordField(
-              label: "Current Password",
-              controller: _currentPasswordController,
-              obscureText: _obscureCurrent,
-              toggleVisibility:
-                  () => setState(() => _obscureCurrent = !_obscureCurrent),
-            ),
-            SizedBox(height: 16),
-            _buildPasswordField(
-              label: "New Password",
-              controller: _newPasswordController,
-              obscureText: _obscureNew,
-              toggleVisibility:
-                  () => setState(() => _obscureNew = !_obscureNew),
-            ),
-            SizedBox(height: 16),
-            _buildPasswordField(
-              label: "Confirm Password",
-              controller: _confirmPasswordController,
-              obscureText: _obscureConfirm,
-              toggleVisibility:
-                  () => setState(() => _obscureConfirm = !_obscureConfirm),
-            ),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _hashPassword,
-              child: Text("Hash Password"),
-            ),
-            SizedBox(height: 24),
-            if (_hashedPassword != null) ...[
-              Text(
-                "SHA-256 Hashed Password:",
-                style: theme.textTheme.titleMedium,
-              ),
-              SizedBox(height: 8),
-              SelectableText(
-                _hashedPassword!,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: blueColor,
-                ),
-              ),
-              SizedBox(height: 24),
-              Text(
-                "SHA-256 is a cryptographic hash function that converts any input into a fixed-size 256-bit hash. "
-                "It is widely used for securely storing passwords because it’s computationally infeasible to reverse or find collisions.",
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPasswordField({
-    required String label,
-    required TextEditingController controller,
-    required bool obscureText,
-    required VoidCallback toggleVisibility,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(Icons.lock),
-        suffixIcon: IconButton(
-          icon: Icon(obscureText ? Icons.visibility : Icons.visibility_off),
-          onPressed: toggleVisibility,
-        ),
-      ),
     );
   }
 }

@@ -30,7 +30,7 @@ class Navbar extends StatelessWidget {
                     radius: 50,
                     backgroundColor: Colors.white,
                     backgroundImage: const AssetImage(
-                      "assets/images/img1profile.jpg",
+                      "assets/admin_assets/images/img1profile.jpg",
                     ),
                     onBackgroundImageError: (exception, stackTrace) {},
                   ),
@@ -86,7 +86,7 @@ class Navbar extends StatelessWidget {
                 ),
           ),
           ListTile(
-            leading: Icon(Icons.notifications, color: blueColor),
+            leading: Icon(Icons.notification_add_sharp, color: blueColor),
             title: const Text("Send Notification"),
             onTap: () {
               Navigator.push(

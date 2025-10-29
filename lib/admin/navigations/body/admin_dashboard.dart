@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter/services.dart';
+import 'package:official_cms/admin/navigations/screens/notifications/NotifiAndActivities.dart';
 import 'package:provider/provider.dart';
 
 // Replace these imports with your actual files
@@ -129,7 +130,7 @@ class _MainNavigatorState extends State<MainNavigator> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.notifications),
-                      onPressed: () => _pushPage(SendNotificationPage()),
+                      onPressed: () => _pushPage(NotificationsPage()),
                     ),
                   ],
                 )
@@ -188,6 +189,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RefreshIndicator(
+        backgroundColor: blueColor,
         onRefresh: _handleRefresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -272,7 +274,7 @@ class _OverVeiwState extends State<OverVeiw> {
                         radius: 40,
                         child: ClipOval(
                           child: Image.asset(
-                            "assets/images/img1profile.jpg",
+                            "assets/admin_assets/images/img1profile.jpg",
                             fit: BoxFit.cover,
                             width: 80,
                           ),
@@ -303,7 +305,7 @@ class ViewCount extends StatefulWidget {
 }
 
 class _ViewCountState extends State<ViewCount> {
-  final List<Map<String, dynamic>> countMap = [
+  List<Map<String, dynamic>> countMap = [
     {"number": "68", "Title": "Teachers", "icon": Icons.person_outline},
     {"number": "1108", "Title": "Students", "icon": Icons.school_outlined},
     {
@@ -317,82 +319,219 @@ class _ViewCountState extends State<ViewCount> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+
+    // Larger screens: show all 4 animated cards
     if (screenWidth > 600) {
-      return SizedBox(
+      return Container(
         height: 105,
         width: screenWidth - 75,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:
               countMap.map((data) {
-                final int targetNumber = int.parse(data["number"]);
-                return TweenAnimationBuilder<double>(
-                  tween: Tween<double>(begin: 0, end: targetNumber.toDouble()),
-                  duration: const Duration(seconds: 4),
-                  builder: (context, value, child) {
-                    return Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            CustomPaint(
-                              painter: CircleProgressPainter(
-                                progress: value / targetNumber,
-                                color: blueColor,
-                              ),
-                              child: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        value.toInt().toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Icon(
-                                        data["icon"],
-                                        size: 16,
-                                        color: blueColor,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: Text(
-                                data["Title"],
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                return _buildCountItem(
+                  data["number"],
+                  data["Title"],
+                  data["icon"],
                 );
               }).toList(),
         ),
       );
     }
-    return const SizedBox.shrink();
+
+    // Smaller screens: show single futuristic card
+    return _buildFuturisticCard();
+  }
+
+  Widget _buildCountItem(String numberStr, String title, IconData icon) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.isDarkMode;
+    final theme = Theme.of(context);
+
+    final int targetNumber = int.parse(numberStr);
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: targetNumber.toDouble()),
+      duration: Duration(seconds: 4),
+      curve: Curves.easeOut,
+      builder: (context, value, child) {
+        double progress = value / targetNumber;
+
+        return Material(
+          elevation: 5,
+          borderRadius: BorderRadius.circular(10),
+          color: isDarkMode ? theme.cardTheme.color : Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                CustomPaint(
+                  painter: CircleProgressPainter(
+                    progress: progress,
+                    // color: blueColor,
+                    color: blueColor,
+                  ),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          value.toInt().toString(),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: blueColor,
+
+                            // color: blueColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Icon(icon, size: 16, color: blueColor),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFuturisticCard() {
+    return Container(
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [blueColor.withOpacity(0.6), Colors.transparent],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: blueColor.withOpacity(0.5),
+            blurRadius: 12,
+            spreadRadius: 2,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: Text(
+              "Campus Overview",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.start,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Responsive: prefer 2 rows (2 columns) on narrow screens,
+                // allow more columns on wide screens.
+                final double spacing = 18;
+                final double runSpacing = 16;
+                final int columns = constraints.maxWidth > 800 ? 4 : 2;
+                final double itemWidth =
+                    (constraints.maxWidth - (columns - 1) * spacing) / columns;
+
+                return Wrap(
+                  alignment: WrapAlignment.end,
+                  spacing: spacing,
+                  runSpacing: runSpacing,
+                  textDirection: TextDirection.rtl,
+                  children:
+                      countMap.map((data) {
+                        final int targetNumber = int.parse(data["number"]);
+                        return SizedBox(
+                          width: itemWidth,
+                          child: TweenAnimationBuilder<double>(
+                            tween: Tween<double>(
+                              begin: 0,
+                              end: targetNumber.toDouble(),
+                            ),
+                            duration: const Duration(seconds: 3),
+                            curve: Curves.easeOut,
+                            builder: (context, value, child) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white.withOpacity(0.1),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  textDirection: TextDirection.rtl,
+                                  children: [
+                                    Icon(
+                                      data["icon"],
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        "${value.toInt()} ${data["Title"]}",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }).toList(),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class CircleProgressPainter extends CustomPainter {
   final double progress;
+
   final Color color;
 
   CircleProgressPainter({required this.progress, required this.color});
@@ -445,42 +584,42 @@ class Gridbuild extends StatefulWidget {
 class _GridbuildState extends State<Gridbuild> {
   final List<Map<String, dynamic>> gridMap = [
     {
-      "icon": "assets/icons/parent.png",
+      "icon": "assets/admin_assets/icons/parent.png",
       "title": "Admin Pannel",
       "description": "Manage and monitor user accounts, roles.",
     },
     {
-      "icon": "assets/icons/icons2-teacher.png",
+      "icon": "assets/admin_assets/icons/icons2-teacher.png",
       "title": "Teacher",
       "description": "Manage teacher profiles and assignments",
     },
     {
-      "icon": "assets/icons/icons3-students.png",
+      "icon": "assets/admin_assets/icons/icons3-students.png",
       "title": "Students",
       "description": "Manage student profiles and academic records",
     },
     {
-      "icon": "assets/icons/icon6-form.png",
+      "icon": "assets/admin_assets/icons/icon6-form.png",
       "title": "Admit Card",
       "description": "Generates Admit Card for Students",
     },
     {
-      "icon": "assets/icons/icons4-approve.png",
+      "icon": "assets/admin_assets/icons/icons4-approve.png",
       "title": "Approve",
       "description": "Review and approve leave requests",
     },
     {
-      "icon": "assets/icons/examination.png",
+      "icon": "assets/admin_assets/icons/examination.png",
       "title": "Result",
       "description": "Manage exams, results and grade reports",
     },
     {
-      "icon": "assets/icons/examination.png",
+      "icon": "assets/admin_assets/icons/examination.png",
       "title": "ID Card",
       "description": "Generates ID card of students",
     },
     {
-      "icon": "assets/icons/icon7-notification.png",
+      "icon": "assets/admin_assets/icons/icon7-notification.png",
       "title": "Notifications",
       "description": "Send and manage important announcements",
     },
@@ -549,7 +688,7 @@ class _GridbuildState extends State<Gridbuild> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                         boxShadow: [
                           BoxShadow(
                             color: blueColor.withOpacity(0.4),
@@ -585,9 +724,13 @@ class _GridbuildState extends State<Gridbuild> {
                               children: [
                                 Text(
                                   gridMap[index]['title'],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).textTheme.bodyLarge?.color,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -595,7 +738,10 @@ class _GridbuildState extends State<Gridbuild> {
                                   gridMap[index]['description'],
                                   style: TextStyle(
                                     fontSize: 10,
-                                    color: Colors.grey[600],
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).textTheme.bodySmall?.color,
                                   ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
