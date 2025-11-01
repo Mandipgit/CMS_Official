@@ -12,8 +12,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw; // <-- use this for PDF generation
 import 'package:permission_handler/permission_handler.dart';
 
-
-
 class Subject {
   String code = '';
   String name = '';
@@ -503,7 +501,7 @@ class _AdmitCardGeneratorState extends State<AdmitCardGenerator> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.asset(
-                      "assets/collage/logo.png",
+                      "assets/admin_assets/collage/logo.png",
                       width: 60,
                       height: 60,
                     ),
@@ -700,7 +698,9 @@ class _AdmitCardGeneratorState extends State<AdmitCardGenerator> {
   Future<void> downloadAsPdf() async {
     final pdf = pw.Document();
 
-    final logoImage = await rootBundle.load('assets/collage/logo.png');
+    final logoImage = await rootBundle.load(
+      'assets/admin_assets/collage/logo.png',
+    );
     final logoBytes = logoImage.buffer.asUint8List();
 
     pdf.addPage(

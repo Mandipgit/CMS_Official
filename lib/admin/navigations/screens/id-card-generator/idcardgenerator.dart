@@ -12,11 +12,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
-
-
-
-
 class IDCardGenerator extends StatefulWidget {
   const IDCardGenerator({super.key});
 
@@ -137,7 +132,7 @@ class _IDCardGeneratorState extends State<IDCardGenerator> {
       Uint8List? logoBytes;
       try {
         logoBytes = await rootBundle
-            .load('assets/collage/logo.png')
+            .load('assets/admin_assets/collage/logo.png')
             .then((value) => value.buffer.asUint8List());
       } catch (_) {
         logoBytes = null;
@@ -478,7 +473,11 @@ class _IDCardGeneratorState extends State<IDCardGenerator> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset('assets/collage/logo.png', width: 50, height: 50),
+              Image.asset(
+                'assets/admin_assets/collage/logo.png',
+                width: 50,
+                height: 50,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
